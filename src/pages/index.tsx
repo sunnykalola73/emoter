@@ -10,6 +10,7 @@ import Image from "next/image";
 import { TRPCError } from "@trpc/server";
 import React from "react";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 dayjs.extend(relativeTime);
 
@@ -91,10 +92,14 @@ const PostView = (props: PostWithUser) => {
       />
       <div className="flex flex-col">
         <div className="text-slate-300gap-1 flex">
-          <span>{`@${author.username}`}</span>
+          <Link href={`/@${author.username}`}>
+            <span>{`@${author.username}`}</span>
+          </Link>
+          <Link href={`/posts/${post.id}`}>
           <span className="font-thin">{`  - ${dayjs(
             post.createdAt,
           ).fromNow()}`}</span>
+          </Link>
         </div>
         <span className="text-2xl ">{post.content}</span>
       </div>
