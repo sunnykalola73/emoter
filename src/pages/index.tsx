@@ -1,10 +1,12 @@
+import { SignIn, SignInButton, SignOutButton } from "@clerk/nextjs";
+import { useUser } from "@clerk/clerk-react";
 import Head from "next/head";
-
 import { api } from "~/utils/api";
 
 export default function Home() {
+  const { data } = api.posts.getAll.useQuery();
 
-  const { data }= api.posts.getAll.useQuery();
+  const user = useUser();
 
   return (
     <>
@@ -14,10 +16,18 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <h1>Hello World!!</h1>
         <div>
+          {!user.isSignedIn && <SignInButton />}
+          {!!user.isSignedIn && <SignOutButton />}
+          <div>
+            {data?.map((post) => (
+              <div key={post.id}>
+                <p>{post.content}</p>
+              </div>
+            ))}
+          </div>
 
-          {data?.map((post) => (<div key={post.id}>{post.content}</div>))}
+          <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
         </div>
       </main>
     </>
