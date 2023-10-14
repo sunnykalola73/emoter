@@ -109,7 +109,7 @@ export default function Home() {
         {isSignedIn && <CreatePostWizard />}
       </div>
 
-      <Feed />
+      {isSignedIn && <Feed />}
     </PageLayout>
   );
 }
